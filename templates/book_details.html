@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="book-info">
+  <h2>My Books</h2>
+</div>
+<div class="my-books-container">
+  {% for book in books %}
+  <div class="book-item">
+    <img src="{{ book.image_url }}" alt="{{ book.title }}" />
+    <div class="book-info">
+      <h3>{{ book.title }}</h3>
+      <p>{{ book.author }}</p>
+      <form action="{{ url_for('update_status') }}" method="POST" class="status-form">
+        <input type="hidden" name="title" value="{{ book.title }}">
+        <select name="status" onchange="this.form.submit()">
+          <option value="to read" {% if book.status == 'to read' %}selected{% endif %}>To Read</option>
+          <option value="read" {% if book.status == 'read' %}selected{% endif %}>Read</option>
+        </select>
+      </form>
+      <!-- Delete Button -->
+      <form action="{{ url_for('delete_book') }}" method="POST" class="delete-form">
+        <input type="hidden" name="title" value="{{ book.title }}">
+        <button type="submit" class="delete-button">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

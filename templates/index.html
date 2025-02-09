@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block content %}
+<h1>Book Recommendations</h1>
+<form action="{{ url_for('index') }}" method="get">
+  <div class="in">
+    <input
+      type="text"
+      name="query"
+      placeholder="Enter genre, book name, or author name"
+      value="{{ query }}"
+    />
+    <button type="submit">Get Recommendations</button>
+  </div>
+</form>
+
+<div class="book-grid">
+  {% for book in recommendations %}
+  <div class="book-box">
+    {% if book.image_url %}
+    <img src="{{ book.image_url }}" alt="Book Cover" />
+    {% else %}
+    <p>No cover image available</p>
+    {% endif %}
+
+    <p>{{ book.title }}</p>
+    <p>{{ book.author }}</p>
+    <form
+      action="{{ url_for('save_book') }}"
+      method="POST"
+      style="margin-top: 10px"
+    >
+      <input type="hidden" name="title" value="{{ book.title }}" />
+      <input type="hidden" name="image_url" value="{{ book.image_url }}" />
+      <input type="hidden" name="author" value="{{ book.author }}" />
+      <button type="submit">Add to My Books</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+
+{% if more_recommendations %}
+<form action="{{ url_for('index') }}" method="get">
+  <input type="hidden" name="query" value="{{ query }}" />
+  <input type="hidden" name="offset" value="{{ offset }}" />
+  <div class="load-more-container">
+    <button id="load-more" class="load-more-button">Load More</button>
+  </div>
+</form>
+{% endif %} {% endblock %}

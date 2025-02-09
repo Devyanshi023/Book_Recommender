@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+
+    <script defer src="{{ url_for('static', filename='auth.js') }}"></script>
+    <title>Book Recommendations</title>
+  </head>
+  <body>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      {% if 'user' in session %}
+      <a href="{{ url_for('my_books') }}">My Books</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+      <a href="{{ url_for('auth') }}">Login/Sign-Up</a>
+      {% endif %}
+    </nav>
+    <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>
